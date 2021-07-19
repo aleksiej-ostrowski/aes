@@ -3,9 +3,19 @@ Simple way to encrypt and decrypt a file
 
 ## Test
 
+go build aes.go
+
+### For encrypt:
+
 time ./aes test.mp4 123 e
 
 0m18.167s
+
+### For decrypt:
+
+time ./aes test.mp4_ 123 d
+
+0m18.468s
 
 ## Verification
 
