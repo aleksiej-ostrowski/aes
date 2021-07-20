@@ -49,11 +49,7 @@ func crypt_file(inp *os.File, out *os.File, key string, mode byte) {
 	stream := cipher.NewCTR(block, iv)
 
 	if mode == 1 {
-
-		if _, err := io.ReadFull(rand.Reader, iv); err != nil {
-			code = 3
-			panic(err)
-		}
+		rand.Read(iv)
 	}
 
 	var msgLen int64
@@ -119,7 +115,7 @@ func crypt_file(inp *os.File, out *os.File, key string, mode byte) {
 	}
 
 	if mode == 1 {
-		w.Write(iv)
+		// w.Write(iv)
 	}
 
 	err = w.Flush()
