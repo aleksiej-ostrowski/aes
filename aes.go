@@ -46,11 +46,12 @@ func crypt_file(inp *os.File, out *os.File, key string, mode byte) {
 
 	iv := make([]byte, block.BlockSize())
 	buf := make([]byte, 1024)
-	stream := cipher.NewCTR(block, iv)
 
 	if mode == 1 {
 		rand.Read(iv)
 	}
+
+	stream := cipher.NewCTR(block, iv)
 
 	var msgLen int64
 
@@ -114,10 +115,6 @@ func crypt_file(inp *os.File, out *os.File, key string, mode byte) {
 		}
 	}
 
-	if mode == 1 {
-		// w.Write(iv)
-	}
-
 	err = w.Flush()
 	if err != nil {
 		code = 8
@@ -139,6 +136,10 @@ func main() {
 			fmt.Println("use --> aes in.file key e{d}")
 		default:
 			fmt.Printf("Error %v\n", code)
+		}
+
+		if r := recover(); r != nil {
+			fmt.Println("Recovering from panic: ", r)
 		}
 
 		os.Exit(code)
@@ -194,5 +195,4 @@ func main() {
 	crypt_file(inp, out, key, mode)
 
 	code = 0
-
 }
