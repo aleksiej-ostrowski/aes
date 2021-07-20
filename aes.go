@@ -51,8 +51,6 @@ func crypt_file(inp *os.File, out *os.File, key string, mode byte) {
 		rand.Read(iv)
 	}
 
-	stream := cipher.NewCTR(block, iv)
-
 	var msgLen int64
 
 	if mode == 2 {
@@ -71,6 +69,8 @@ func crypt_file(inp *os.File, out *os.File, key string, mode byte) {
 			panic(err)
 		}
 	}
+
+	stream := cipher.NewCTR(block, iv)
 
 	w := bufio.NewWriter(out)
 
@@ -112,6 +112,15 @@ func crypt_file(inp *os.File, out *os.File, key string, mode byte) {
 				code = 7
 				panic(err)
 			}
+		}
+	}
+
+	if mode == 1 {
+		_, err = w.Write(iv)
+
+		if err != nil {
+			code = 13
+			panic(err)
 		}
 	}
 
