@@ -1,17 +1,3 @@
-/*
-
-#--------------------------------#
-#                                #
-#  version 0.0.1                 #
-#                                #
-#  Aleksiej Ostrowski, 2021      #
-#                                #
-#  https://aleksiej.com          #
-#                                #
-#--------------------------------#
-
-*/
-
 // https://stackoverflow.com/questions/52696921/reading-bytes-into-go-buffer-with-a-fixed-stride-size
 // https://levelup.gitconnected.com/a-short-guide-to-encryption-using-go-da97c928259f
 
@@ -28,7 +14,34 @@ import (
 	"os"
 )
 
-var code int = -1
+const (
+	info = `
+
+#--------------------------------#
+#                                #
+#  version 0.0.1                 #
+#                                #
+#  Aleksiej Ostrowski, 2021      #
+#                                #
+#  https://aleksiej.com          #
+#                                #
+#--------------------------------#
+
+For encrypting a file:
+
+./aes file_name_for_encrypting key_for_encrypting e
+
+
+For decrypting a file:
+
+./aes file_name_for_decrypting key_for_decrypting d
+
+`
+)
+
+var (
+	code int = -1
+)
 
 func crypt_file(inp *os.File, out *os.File, key string, mode byte) {
 
@@ -142,7 +155,7 @@ func main() {
 		case -1:
 			fmt.Println("Unknown error")
 		case 1:
-			fmt.Println("use --> aes in.file key e{d}")
+			fmt.Println(info)
 		default:
 			fmt.Printf("Error %v\n", code)
 		}
