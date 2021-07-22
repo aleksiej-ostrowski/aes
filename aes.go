@@ -19,7 +19,7 @@ const (
 
 #--------------------------------#
 #                                #
-#  version 0.0.1                 #
+#  version 0.0.2                 #
 #                                #
 #  Aleksiej Ostrowski, 2021      #
 #                                #
@@ -29,12 +29,12 @@ const (
 
 For encrypting a file:
 
-./aes file_name_for_encrypting key_for_encrypting e
+./aes file_name_for_encrypting password_for_encrypting e
 
 
 For decrypting a file:
 
-./aes file_name_for_decrypting key_for_decrypting d
+./aes file_name_for_decrypting password_for_decrypting d
 
 `
 )
@@ -43,12 +43,12 @@ var (
 	code int = -1
 )
 
-func crypt_file(inp *os.File, out *os.File, key string, mode byte) {
+func crypt_file(inp *os.File, out *os.File, password string, mode byte) {
 
 	// encrypt = [mode = 1]
 	// decrypt = [mode = 2]
 
-	hash := sha256.Sum256([]byte(key))
+	hash := sha256.Sum256([]byte(password))
 	// fmt.Printf("%x", hash[:])
 
 	block, err := aes.NewCipher(hash[:])
@@ -176,7 +176,7 @@ func main() {
 
 	input_filename := os.Args[1]
 
-	key := os.Args[2]
+	password := os.Args[2]
 
 	output_filename := input_filename + "_"
 
@@ -214,7 +214,7 @@ func main() {
 		mode = 2
 	}
 
-	crypt_file(inp, out, key, mode)
+	crypt_file(inp, out, password, mode)
 
 	code = 0
 }
