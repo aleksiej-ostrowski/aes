@@ -7,23 +7,26 @@ Simple way to encrypt and decrypt a big file
 
 ### For encrypt:
 
-`time ./aes test.mp4 123 e`
-
-0m18.167s
+`./aes test.mp4 123 e`
 
 ### For decrypt:
 
-`time ./aes test.mp4_ 123 d`
+`./aes test.mp4_ 123 d`
 
-0m18.468s
 
-## Verification
+# paes
+Simple way to encrypt and decrypt a big file in pipe style
 
-size(test.mp4) = 2619M
+## Test
 
-sha(123) = a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3
+`go build paes.go`
 
-`time openssl enc -aes-256-ctr -in test.mp4 -out test.mp4.openssl -K a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3 -iv 00000000000000000000000000000000`
+### For encrypt:
 
-0m10.658s
+`cat test.mp4 | ./paes 123 e > test.mp4.crp`
+
+### For decrypt:
+
+`cat test.mp4.crp | ./paes 123 d > test.mp4`
+
 

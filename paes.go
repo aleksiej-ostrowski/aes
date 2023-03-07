@@ -27,12 +27,12 @@ const (
 
 For encrypting a file:
 
-./aes file_name_for_encrypting password_for_encrypting e
+... | paes password_for_encrypting e > file_name_for_result_encrypting
 
 
 For decrypting a file:
 
-./aes file_name_for_decrypting password_for_decrypting d
+... | paes password_for_decrypting d > file_name_for_result_decrypting
 
 `
 )
@@ -110,47 +110,24 @@ func main() {
 		os.Exit(code)
 	}()
 
-	if len(os.Args) != 4 {
+	if len(os.Args) != 3 {
 		code = 1
 		return
 	}
 
 	// rand.Seed(time.Now().UnixNano())
 
-	input_filename := os.Args[1]
+	password := os.Args[1]
 
-	password := os.Args[2]
-
-	output_filename := input_filename + "_"
-
-	inp, err := os.Open(input_filename)
-	if err != nil {
-		code = 9
-		return
-	}
+	inp := os.Stdin
 	defer inp.Close()
 
-	st, err := inp.Stat()
-	if err != nil {
-		code = 10
-		return
-	}
-
-	if st.Size() == 0 {
-		code = 11
-		return
-	}
-
-	out, err := os.Create(output_filename)
-	if err != nil {
-		code = 12
-		return
-	}
+	out := os.Stdout
 	defer out.Close()
 
 	var mode byte = 0
 
-	switch what := os.Args[3]; what {
+	switch what := os.Args[2]; what {
 	case "e":
 		mode = 1
 	case "d":
